@@ -10,6 +10,7 @@ abstract class _ScanResultMetadata {
   static const String solicitedServiceUuids = "solicitedServiceUUIDs";
   static const String isConnectable = "isConnectable";
   static const String overflowServiceUuids = "overflowServiceUUIDs";
+  static const String rawScanRecord = "rawScanRecord";
 }
 
 /// A scan result emitted by the scanning operation, containing [Peripheral] and [AdvertisementData].
@@ -42,6 +43,9 @@ class AdvertisementData {
   /// The manufacturer data of the peripheral.
   Uint8List manufacturerData;
 
+  /// The raw equivalent of overall scan record
+  Uint8List rawScanRecord;
+
   /// A dictionary that contains service-specific advertisement data.
   Map<String, Uint8List> serviceData;
 
@@ -61,6 +65,8 @@ class AdvertisementData {
   AdvertisementData._fromJson(Map<String, dynamic> json)
       : manufacturerData =
             _decodeBase64OrNull(json[_ScanResultMetadata.manufacturerData]),
+        rawScanRecord =
+            _decodeBase64OrNull(json[_ScanResultMetadata.rawScanRecord]),
         serviceData =
             _getServiceDataOrNull(json[_ScanResultMetadata.serviceData]),
         serviceUuids =

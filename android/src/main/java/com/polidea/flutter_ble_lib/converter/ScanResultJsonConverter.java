@@ -27,6 +27,7 @@ public class ScanResultJsonConverter implements JsonConverter<ScanResult> {
         String MTU = "mtu";
 
         String MANUFACTURER_DATA = "manufacturerData";
+        String RAW_SCAN_RECORD = "rawScanRecord";
         String SERVICE_DATA = "serviceData";
         String SERVICE_UUIDS = "serviceUUIDs";
         String LOCAL_NAME = "localName";
@@ -60,6 +61,7 @@ public class ScanResultJsonConverter implements JsonConverter<ScanResult> {
     private void serializeAdvertisementData(JSONObject root,
                                             @NonNull AdvertisementData advertisementData) throws JSONException {
         serializeManufacturerData(root, advertisementData);
+        serializeRawScanRecordData(root, advertisementData);
         serializeServiceData(root, advertisementData);
         serializeServiceUuids(root, advertisementData);
         serializeSolicitedServiceUuids(root, advertisementData);
@@ -67,6 +69,12 @@ public class ScanResultJsonConverter implements JsonConverter<ScanResult> {
                 ? advertisementData.getLocalName() : JSONObject.NULL);
         root.put(Metadata.TX_POWER_LEVEL, advertisementData.getTxPowerLevel() != null
                 ? advertisementData.getTxPowerLevel() : JSONObject.NULL);
+    }
+
+    private void serializeRawScanRecordData(JSONObject target,
+                                           @NonNull AdvertisementData advertisementData) throws JSONException {
+        target.put(Metadata.RAW_SCAN_RECORD, advertisementData.getManufacturerData() != null ?
+                Base64Converter.encode(advertisementData.getRawScanRecord()) : JSONObject.NULL);
     }
 
     private void serializeManufacturerData(JSONObject target,
